@@ -1,0 +1,11 @@
+[package]
+name = "tavol"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aes = "0.8.2"
+clap = { version = "4.2.7", features = ["derive"] }
+error-stack = "0.3.1"
+sha2 = "0.10.6"
+thiserror = "1.0.40"

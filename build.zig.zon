@@ -1,0 +1,10 @@
+.{
+	.name = "tavol",
+	.version = "0.1.0",
+	.dependencies = .{
+		.zlap = .{
+			.url = "https://github.com/e0328eric/zlap/archive/refs/tags/v0.2.1.tar.gz",
+            .hash = "1220cc7a6ec7ac8b3902966afc74f2b04ebe9eb78189edc0d41770742c9fbbbc33b7",
+		}
+	}
+}

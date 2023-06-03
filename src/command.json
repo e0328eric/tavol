@@ -1,1 +1,33 @@
-{"name":"tavol","desc":"Simple AES-encryption/decryption for files","args":[],"flags":[],"subcmds":[{"name":"encrypt","desc":"","args":[{"desc":"encryption key","meta":"KEY","type":"string","default":null},{"desc":"","meta":"INPUT","type":"string","default":null},{"desc":"","meta":"OUTPUT","type":"string","default":null}],"flags":[]},{"name":"decrypt","desc":"","args":[{"desc":"","meta":"KEY","type":"string","default":null},{"desc":"","meta":"INPUT","type":"string","default":null},{"desc":"","meta":"OUTPUT","type":"string","default":null}],"flags":[]}]}
+{
+  "name": "tavol",
+  "desc": "Simple AES-encryption/decryption for files",
+  "args": [],
+  "flags": [],
+  "subcmds": [
+    {
+      "name": "encrypt",
+      "desc": "Encrypt file",
+      "args": [
+        {
+          "desc": "encryption key",
+          "meta": "KEY",
+          "type": "string",
+          "default": null
+        },
+        { "desc": "", "meta": "INPUT", "type": "string", "default": null },
+        { "desc": "", "meta": "OUTPUT", "type": "string", "default": null }
+      ],
+      "flags": []
+    },
+    {
+      "name": "decrypt",
+      "desc": "Decrypt file",
+      "args": [
+        { "desc": "", "meta": "KEY", "type": "string", "default": null },
+        { "desc": "", "meta": "INPUT", "type": "string", "default": null },
+        { "desc": "", "meta": "OUTPUT", "type": "string", "default": null }
+      ],
+      "flags": []
+    }
+  ]
+}

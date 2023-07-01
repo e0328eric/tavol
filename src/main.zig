@@ -148,6 +148,6 @@ fn decryptFile(key: []const u8, input: []const u8, output: []const u8) !void {
         i += 1;
     }
 
-    const to_drop_bytes: u64 = @intCast(u64, i * 128 -| padding_bytes);
+    const to_drop_bytes: u64 = @intCast(i * 128 -| padding_bytes);
     try plaintext.setEndPos(to_drop_bytes);
 }

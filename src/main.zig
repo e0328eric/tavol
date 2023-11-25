@@ -72,7 +72,7 @@ fn encryptFile(key: []const u8, to_encrypt: []const u8, encrypted: []const u8) !
     var aes_buffer = [_]u8{0} ** (aes256_block_size * aes256_block_number);
     var padding_bytes: u128 = 0;
     while (true) {
-        var bytes_read = try plaintext.read(&file_buffer);
+        const bytes_read = try plaintext.read(&file_buffer);
         const end_of_encrypt = bytes_read < aes256_block_size * aes256_block_number;
         if (end_of_encrypt) {
             padding_bytes = (aes256_block_size * aes256_block_number) - bytes_read;
@@ -90,7 +90,7 @@ fn encryptFile(key: []const u8, to_encrypt: []const u8, encrypted: []const u8) !
 
     var padding_bytes_buf: [@sizeOf(u128)]u8 = undefined;
     var padding_aes_buf: [@sizeOf(u128)]u8 = undefined;
-    mem.writeInt(u128, &padding_bytes_buf, padding_bytes, Endian.Big);
+    mem.writeInt(u128, &padding_bytes_buf, padding_bytes, Endian.big);
     cipher.encrypt(&padding_aes_buf, &padding_bytes_buf);
     _ = try cipertext.write(&padding_aes_buf);
 }

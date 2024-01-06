@@ -1,14 +1,28 @@
 const std = @import("std");
+const builtin = @import("builtin");
 
-pub fn build(b: *std.Build) !void {
+const min_zig_string = "0.12.0-dev.2058+04ac028a2";
+
+// NOTE: This code came from
+// https://github.com/zigtools/zls/blob/master/build.zig.
+const Build = blk: {
+    const current_zig = builtin.zig_version;
+    const min_zig = std.SemanticVersion.parse(min_zig_string) catch unreachable;
+    if (current_zig.order(min_zig) == .lt) {
+        @compileError(std.fmt.comptimePrint(
+            "Your Zig version v{} does not meet the minimum build requirement of v{}",
+            .{ current_zig, min_zig },
+        ));
+    }
+    break :blk std.Build;
+};
+
+pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
-    const version = try std.SemanticVersion.parse("0.1.3");
+    const version = try std.SemanticVersion.parse("0.1.4");
 
-    const zlap_dep = b.dependency("zlap", .{
-        .target = target,
-        .optimize = optimize,
-    });
+    const zlap_module = b.dependency("zlap", .{}).module("zlap");
 
     const exe = b.addExecutable(.{
         .name = "tavol",
@@ -17,7 +31,7 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
         .version = version,
     });
-    exe.addModule("zlap", zlap_dep.module("zlap"));
+    exe.root_module.addImport("zlap", zlap_module);
     b.installArtifact(exe);
 
     const run_cmd = b.addRunArtifact(exe);

@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const min_zig_string = "0.12.0-dev.2058+04ac028a2";
+const min_zig_string = "0.13.0";
 
 // NOTE: This code came from
 // https://github.com/zigtools/zls/blob/master/build.zig.
@@ -26,10 +26,14 @@ pub fn build(b: *Build) !void {
 
     const exe = b.addExecutable(.{
         .name = "tavol",
-        .root_source_file = .{ .path = "src/main.zig" },
+        .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
         .version = version,
+        .strip = switch (optimize) {
+            .Debug, .ReleaseSafe => false,
+            else => true,
+        },
     });
     exe.root_module.addImport("zlap", zlap_module);
     b.installArtifact(exe);
@@ -45,7 +49,7 @@ pub fn build(b: *Build) !void {
     run_step.dependOn(&run_cmd.step);
 
     const unit_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/main.zig" },
+        .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });

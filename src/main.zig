@@ -44,6 +44,8 @@ pub fn main() !void {
             subcmd.args.items[1].value.string,
             subcmd.args.items[2].value.string,
         );
+    } else {
+        std.debug.print("{s}\n", .{zlap.help_msg});
     }
 }
 

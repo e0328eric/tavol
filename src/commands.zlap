@@ -1,0 +1,49 @@
+{
+    #main;
+    #name: tavol;
+    #desc: Simple AES-encryption/decryption for files;
+}
+{
+    #name: encrypt;
+    #desc: Encrypt file;
+
+    #arg;
+    meta: KEY;
+    desc: encryption key;
+    type: string;
+    default:;
+
+    #arg;
+    meta: INPUT;
+    desc: input filename;
+    type: string;
+    default:;
+
+    #arg;
+    meta: OUTPUT;
+    desc: output filename;
+    type: string;
+    default:;
+}
+{
+    #name: decrypt;
+    #desc: Decrypt file;
+
+    #arg;
+    meta: KEY;
+    desc: encryption key;
+    type: string;
+    default:;
+
+    #arg;
+    meta: INPUT;
+    desc: input filename;
+    type: string;
+    default:;
+
+    #arg;
+    meta: OUTPUT;
+    desc: output filename;
+    type: string;
+    default:;
+}

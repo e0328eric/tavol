@@ -22,7 +22,7 @@ pub fn main() !void {
     defer arena.deinit();
     const allocator = arena.allocator();
 
-    var zlap = try @import("zlap").Zlap.init(allocator, @embedFile("./command.json"));
+    var zlap = try @import("zlap").Zlap(@embedFile("commands.zlap"), null).init(allocator);
     defer zlap.deinit();
 
     if (zlap.is_help) {
@@ -33,16 +33,16 @@ pub fn main() !void {
     if (zlap.isSubcmdActive("encrypt")) {
         const subcmd = zlap.subcommands.get("encrypt").?;
         return encryptFile(
-            subcmd.args.items[0].value.string,
-            subcmd.args.items[1].value.string,
-            subcmd.args.items[2].value.string,
+            subcmd.args.get("KEY").?.value.string,
+            subcmd.args.get("INPUT").?.value.string,
+            subcmd.args.get("OUTPUT").?.value.string,
         );
     } else if (zlap.isSubcmdActive("decrypt")) {
         const subcmd = zlap.subcommands.get("decrypt").?;
         return decryptFile(
-            subcmd.args.items[0].value.string,
-            subcmd.args.items[1].value.string,
-            subcmd.args.items[2].value.string,
+            subcmd.args.get("KEY").?.value.string,
+            subcmd.args.get("INPUT").?.value.string,
+            subcmd.args.get("OUTPUT").?.value.string,
         );
     } else {
         std.debug.print("{s}\n", .{zlap.help_msg});

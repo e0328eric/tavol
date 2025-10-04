@@ -1,11 +1,12 @@
 .{
-    .name = "tavol",
+    .name = .tavol,
     .version = "0.1.4",
+    .fingerprint = 0xbff76f8dac4dca89,
     .paths = .{""},
     .dependencies = .{
         .zlap = .{
-            .url = "https://github.com/e0328eric/zlap/archive/refs/tags/v0.3.7.tar.gz",
-            .hash = "12203b636d575941bfba766cc9c34f27605db62b10f92cbf1056d3ee02a4e754b995",
+            .url = "git+https://github.com/e0328eric/zlap.git#0527c02f6ba84d1db47dc92bf799f5f9b4756bf7",
+            .hash = "zlap-0.8.1-boKVXOymAADfoRHAiu8kxZyza85m_uBt4nad6pOhBlVB",
         },
     },
 }

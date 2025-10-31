@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const min_zig_string = "0.16.0-dev.393+dd4be26f5";
+const min_zig_string = "0.15.2";
 
 // NOTE: This code came from
 // https://github.com/zigtools/zls/blob/master/build.zig.
@@ -10,7 +10,7 @@ const Build = blk: {
     const min_zig = std.SemanticVersion.parse(min_zig_string) catch unreachable;
     if (current_zig.order(min_zig) == .lt) {
         @compileError(std.fmt.comptimePrint(
-            "Your Zig version v{} does not meet the minimum build requirement of v{}",
+            "Your Zig version v{f} does not meet the minimum build requirement of v{f}",
             .{ current_zig, min_zig },
         ));
     }

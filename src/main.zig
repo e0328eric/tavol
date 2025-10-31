@@ -56,15 +56,15 @@ fn encryptFile(key: []const u8, to_encrypt: []const u8, encrypted: []const u8) !
     key_hasher.update(key);
     const orig_key = key_hasher.finalResult();
 
-    const keys: struct { key: [32]u8, key_rand: [32]u8 } = make_key: {
+    const keys: [32]u8, const key_rand: [32]u8 = make_key: {
         var key_rand_orig = [_]u8{0} ** 32;
         random.bytes(&key_rand_orig);
         var key_rand: @Vector(32, u8) = key_rand_orig;
         key_rand ^= @as(@Vector(32, u8), orig_key);
-        break :make_key .{ .key = key_rand, .key_rand = key_rand_orig };
+        break :make_key .{ key_rand, key_rand_orig };
     };
 
-    var cipher = Aes256.initEnc(keys.key);
+    var cipher = Aes256.initEnc(keys);
     const plaintext = try fs.cwd().openFile(to_encrypt, .{});
     defer plaintext.close();
     const cipertext = try fs.cwd().createFile(encrypted, .{});
@@ -88,7 +88,7 @@ fn encryptFile(key: []const u8, to_encrypt: []const u8, encrypted: []const u8) !
             break;
         }
     }
-    _ = try cipertext.write(&keys.key_rand);
+    _ = try cipertext.write(&key_rand);
 
     var padding_bytes_buf: [@sizeOf(u128)]u8 = undefined;
     var padding_aes_buf: [@sizeOf(u128)]u8 = undefined;
@@ -106,7 +106,7 @@ fn decryptFile(key: []const u8, input: []const u8, output: []const u8) !void {
 
     const cipertext = try fs.cwd().openFile(input, .{});
     defer cipertext.close();
-    const keys: struct { key: [32]u8, key_rand: [32]u8 } = extract_key: {
+    const keys: [32]u8, _ = extract_key: {
         var key_buf: [32]u8 = undefined;
         try cipertext.seekFromEnd(-32 - @sizeOf(u128));
         const bytes_read = try cipertext.read(&key_buf);
@@ -115,10 +115,10 @@ fn decryptFile(key: []const u8, input: []const u8, output: []const u8) !void {
 
         var key_rand: @Vector(32, u8) = key_buf;
         key_rand ^= @as(@Vector(32, u8), orig_key);
-        break :extract_key .{ .key = key_rand, .key_rand = key_buf };
+        break :extract_key .{ key_rand, key_buf };
     };
 
-    var cipher = Aes256.initDec(keys.key);
+    var cipher = Aes256.initDec(keys);
     const padding_bytes = extract_padding: {
         var padding_bytes_buf: [@sizeOf(u128)]u8 = undefined;
         var padding_aes_buf: [@sizeOf(u128)]u8 = undefined;
